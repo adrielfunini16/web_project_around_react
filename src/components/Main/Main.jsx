@@ -4,6 +4,28 @@ import Popup from "./components/Popup/Popup";
 import EditAvatar from "./components/Popup/components/NewCard/EditAvatar/EditAvatar";
 import EditProfile from "./components/Popup/components/NewCard/EditProfile/EditProfile";
 import NewCard from "./components/Popup/components/NewCard/NewCard";
+import Card from "./components/Card/Card";
+
+const cards = [
+  {
+    isLiked: false,
+    _id: "5d1f0611d321eb4bdcd707dd",
+    name: "Yosemite Valley",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
+    owner: "5d1f0611d321eb4bdcd707dd",
+    createdAt: "2019-07-05T08:10:57.741Z",
+  },
+  {
+    isLiked: false,
+    _id: "5d1f064ed321eb4bdcd707de",
+    name: "Lake Louise",
+    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
+    owner: "5d1f0611d321eb4bdcd707dd",
+    createdAt: "2019-07-05T08:11:58.324Z",
+  },
+];
+
+console.log(cards);
 
 export default function Main() {
   const [popup, setPopup] = useState(null);
@@ -51,24 +73,13 @@ export default function Main() {
       </section>
       <section className="cards page__section">
         <ul className="cards__list">
-          <template id="card__template">
-            <li className="card">
-              <img className="card__image" src="#" alt="#" />
-              <button
-                aria-label="Excluir cartão"
-                className="card__delete-button"
-                type="button"
-              ></button>
-              <div className="card__description">
-                <h2 className="card__title"></h2>
-                <button
-                  aria-label="Botão de curtir"
-                  className="card__like-button"
-                  type="button"
-                ></button>
-              </div>
-            </li>
-          </template>
+          {cards.map((card) => (
+            <Card
+              key={card._id}
+              card={card}
+              handleOpenPopup={handleOpenPopup}
+            />
+          ))}
         </ul>
       </section>
       {popup && (

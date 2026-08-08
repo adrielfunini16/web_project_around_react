@@ -1,6 +1,6 @@
 export default function EditAvatar() {
   return (
-    <form className="popup__form" id="edit-avatar-form" noValidate>
+    <form className="popup__form" noValidate>
       <input
         id="avatar-link-input"
         className="popup__input popup__input_type_url"
