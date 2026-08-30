@@ -1,31 +1,56 @@
+import { useState, useContext } from "react";
+import CurrentUserContext from "../../../../../../../contexts/CurrentUserContext";
+
 export default function EditProfile() {
+  const currentUser = useContext(CurrentUserContext);
+  const [name, setName] = useState(currentUser.name);
+  const [description, setDescription] = useState(currentUser.about);
+
+  const handleNameChange = (event) => {
+    setName(event.target.value);
+  };
+
+  const handleDescriptionChange = (event) => {
+    setDescription(event.target.value);
+  };
+
   return (
-    <form className="popup__form" noValidate>
-      <input
-        id="profile-name-input"
-        className="popup__input popup__input_type_name"
-        name="name"
-        placeholder="Nome"
-        type="text"
-        minLength="2"
-        maxLength="40"
-        required
-      />
-      <span className="popup__error" id="profile-name-input-error"></span>
-      <input
-        id="profile-description-input"
-        className="popup__input popup__input_type_description"
-        name="description"
-        placeholder="Sobre mim"
-        type="text"
-        minLength="2"
-        maxLength="200"
-        required
-      />
-      <span
-        className="popup__error"
-        id="profile-description-input-error"
-      ></span>
+    <form
+      className="popup__form"
+      name="profile-form"
+      id="edit-profile-form"
+      noValidate
+    >
+      <label className="popup__label">
+        <input
+          className="popup__input popup__input_type_name"
+          id="owner-name"
+          maxLength="40"
+          minLength="2"
+          name="userName"
+          placeholder="Nome"
+          required
+          type="text"
+          value={name}
+          onChange={handleNameChange}
+        />
+        <span className="popup__error" id="owner-name-error"></span>
+      </label>
+      <label className="popup__label">
+        <input
+          className="popup__input popup__input_type_description"
+          id="owner-description"
+          maxLength="200"
+          minLength="2"
+          name="userDescription"
+          placeholder="Sobre mim"
+          required
+          type="text"
+          value={description}
+          onChange={handleDescriptionChange}
+        />
+        <span className="popup__error" id="owner-description-error"></span>
+      </label>
       <button className="button popup__button" type="submit">
         Salvar
       </button>

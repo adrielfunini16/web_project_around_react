@@ -1,34 +1,23 @@
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import avatar from "../../images/avatar.jpg";
 import Popup from "./components/Popup/Popup";
 import EditAvatar from "./components/Popup/components/NewCard/EditAvatar/EditAvatar";
 import EditProfile from "./components/Popup/components/NewCard/EditProfile/EditProfile";
 import NewCard from "./components/Popup/components/NewCard/NewCard";
 import Card from "./components/Card/Card";
-
-const cards = [
-  {
-    isLiked: false,
-    _id: "5d1f0611d321eb4bdcd707dd",
-    name: "Yosemite Valley",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_yosemite.jpg",
-    owner: "5d1f0611d321eb4bdcd707dd",
-    createdAt: "2019-07-05T08:10:57.741Z",
-  },
-  {
-    isLiked: false,
-    _id: "5d1f064ed321eb4bdcd707de",
-    name: "Lake Louise",
-    link: "https://practicum-content.s3.us-west-1.amazonaws.com/web-code/moved_lake-louise.jpg",
-    owner: "5d1f0611d321eb4bdcd707dd",
-    createdAt: "2019-07-05T08:11:58.324Z",
-  },
-];
-
-console.log(cards);
+import api from "../../utils/api";
+import CurrentUserContext from "../../contexts/CurrentUserContext";
 
 export default function Main() {
   const [popup, setPopup] = useState(null);
+  const [cards, setCards] = useState([]);
+  const currentUser = useContext(CurrentUserContext);
+
+  useEffect(() => {
+    api.getInitialCards().then((data) => {
+      setCards(data);
+    });
+  }, []);
 
   const newCardPopup = { title: "New card", children: <NewCard /> };
   const editProfilePopup = { title: "Edit Profile", children: <EditProfile /> };
@@ -42,11 +31,37 @@ export default function Main() {
     setPopup(null);
   }
 
+  async function handleCardLike(card) {
+    const isLiked = card.isLiked;
+
+    await api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards((state) =>
+          state.map((currentCard) =>
+            currentCard._id === card._id ? newCard : currentCard,
+          ),
+        );
+      })
+      .catch((error) => console.error(error));
+  }
+
+  async function handleCardDelete(card) {
+    await api.cardDelete(card._id);
+    setCards((state) =>
+      state.filter((currentCard) => currentCard._id !== card._id),
+    );
+  }
+
   return (
     <main className="content">
       <section className="profile page__section">
         <div className="profile__avatar-container">
-          <img className="profile__image" src={avatar} alt="Avatar" />
+          <img
+            className="profile__image"
+            src={currentUser.avatar}
+            alt="Avatar"
+          />
           <button
             aria-label="Editar foto do perfil"
             className="profile__avatar-edit-button"
@@ -55,14 +70,14 @@ export default function Main() {
           ></button>
         </div>
         <div className="profile__info">
-          <h1 className="profile__title">Jacques Cousteau</h1>
+          <h1 className="profile__title">{currentUser.name}</h1>
           <button
             aria-label="Editar perfil"
             className="profile__edit-button"
             type="button"
             onClick={() => handleOpenPopup(editProfilePopup)}
           ></button>
-          <p className="profile__description">Explorador</p>
+          <p className="profile__description">{currentUser.about}</p>
         </div>
         <button
           aria-label="Adicionar cartão"
@@ -78,6 +93,8 @@ export default function Main() {
               key={card._id}
               card={card}
               handleOpenPopup={handleOpenPopup}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
             />
           ))}
         </ul>
