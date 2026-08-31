@@ -8,50 +8,14 @@ import Card from "./components/Card/Card";
 import api from "../../utils/api";
 import CurrentUserContext from "../../contexts/CurrentUserContext";
 
-export default function Main() {
-  const [popup, setPopup] = useState(null);
-  const [cards, setCards] = useState([]);
-  const currentUser = useContext(CurrentUserContext);
-
-  useEffect(() => {
-    api.getInitialCards().then((data) => {
-      setCards(data);
-    });
-  }, []);
+export default function Main(props) {
+  const { onOpenPopup, onClosePopup, popup, cards, onCardLike, onCardDelete } =
+    props;
+  const { currentUser } = useContext(CurrentUserContext);
 
   const newCardPopup = { title: "New card", children: <NewCard /> };
   const editProfilePopup = { title: "Edit Profile", children: <EditProfile /> };
   const editAvatarPopup = { title: "Edit Avatar", children: <EditAvatar /> };
-
-  function handleOpenPopup(popup) {
-    setPopup(popup);
-  }
-
-  function handleClosePopup() {
-    setPopup(null);
-  }
-
-  async function handleCardLike(card) {
-    const isLiked = card.isLiked;
-
-    await api
-      .changeLikeCardStatus(card._id, !isLiked)
-      .then((newCard) => {
-        setCards((state) =>
-          state.map((currentCard) =>
-            currentCard._id === card._id ? newCard : currentCard,
-          ),
-        );
-      })
-      .catch((error) => console.error(error));
-  }
-
-  async function handleCardDelete(card) {
-    await api.cardDelete(card._id);
-    setCards((state) =>
-      state.filter((currentCard) => currentCard._id !== card._id),
-    );
-  }
 
   return (
     <main className="content">
@@ -66,7 +30,7 @@ export default function Main() {
             aria-label="Editar foto do perfil"
             className="profile__avatar-edit-button"
             type="button"
-            onClick={() => handleOpenPopup(editAvatarPopup)}
+            onClick={() => onOpenPopup(editAvatarPopup)}
           ></button>
         </div>
         <div className="profile__info">
@@ -75,7 +39,7 @@ export default function Main() {
             aria-label="Editar perfil"
             className="profile__edit-button"
             type="button"
-            onClick={() => handleOpenPopup(editProfilePopup)}
+            onClick={() => onOpenPopup(editProfilePopup)}
           ></button>
           <p className="profile__description">{currentUser.about}</p>
         </div>
@@ -83,7 +47,7 @@ export default function Main() {
           aria-label="Adicionar cartão"
           className="profile__add-button"
           type="button"
-          onClick={() => handleOpenPopup(newCardPopup)}
+          onClick={() => onOpenPopup(newCardPopup)}
         ></button>
       </section>
       <section className="cards page__section">
@@ -92,15 +56,15 @@ export default function Main() {
             <Card
               key={card._id}
               card={card}
-              handleOpenPopup={handleOpenPopup}
-              onCardLike={handleCardLike}
-              onCardDelete={handleCardDelete}
+              onOpenPopup={onOpenPopup}
+              onCardLike={onCardLike}
+              onCardDelete={onCardDelete}
             />
           ))}
         </ul>
       </section>
       {popup && (
-        <Popup onClose={handleClosePopup} title={popup.title}>
+        <Popup onClose={onClosePopup} title={popup.title}>
           {popup.children}
         </Popup>
       )}

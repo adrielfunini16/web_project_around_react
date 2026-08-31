@@ -40,7 +40,7 @@ class Api {
       method: "POST",
       headers: this.headers,
       body: JSON.stringify({
-        name: data["place-name"],
+        name: data.name,
         link: data.link,
       }),
     }).then(this.#checkResponse);
