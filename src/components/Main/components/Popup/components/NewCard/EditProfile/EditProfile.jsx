@@ -1,17 +1,29 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useRef, useEffect } from "react";
+import useFormValidation from "../../../../../../../hooks/useFormValidation";
 import CurrentUserContext from "../../../../../../../contexts/CurrentUserContext";
 
 export default function EditProfile() {
+  const formRef = useRef();
+  const { validateForm, isFormValid, errors, handleInputValidity } =
+    useFormValidation();
   const { currentUser, handleUpdateUser } = useContext(CurrentUserContext);
   const [name, setName] = useState(currentUser.name);
   const [description, setDescription] = useState(currentUser.about);
 
+  useEffect(() => {
+    if (formRef.current) {
+      validateForm(formRef.current);
+    }
+  }, [name, description]);
+
   const handleNameChange = (event) => {
     setName(event.target.value);
+    handleInputValidity(event);
   };
 
   const handleDescriptionChange = (event) => {
     setDescription(event.target.value);
+    handleInputValidity(event);
   };
 
   const handleSubmit = (event) => {
@@ -25,6 +37,7 @@ export default function EditProfile() {
       name="profile-form"
       id="edit-profile-form"
       onSubmit={handleSubmit}
+      ref={formRef}
       noValidate
     >
       <label className="popup__label">
@@ -40,7 +53,9 @@ export default function EditProfile() {
           value={name}
           onChange={handleNameChange}
         />
-        <span className="popup__error" id="owner-name-error"></span>
+        <span className="popup__error" id="owner-name-error">
+          {errors["userName"]}
+        </span>
       </label>
       <label className="popup__label">
         <input
@@ -55,9 +70,15 @@ export default function EditProfile() {
           value={description}
           onChange={handleDescriptionChange}
         />
-        <span className="popup__error" id="owner-description-error"></span>
+        <span className="popup__error" id="owner-description-error">
+          {errors["userDescription"]}
+        </span>
       </label>
-      <button className="button popup__button" type="submit">
+      <button
+        className="button popup__button"
+        type="submit"
+        disabled={!isFormValid}
+      >
         Salvar
       </button>
     </form>

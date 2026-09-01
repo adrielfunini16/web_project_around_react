@@ -1,8 +1,9 @@
 import { useRef, useContext, useState } from "react";
+import useFormValidation from "../../../../../../hooks/useFormValidation";
 import CurrentUserContext from "../../../../../../contexts/CurrentUserContext";
 
 export default function NewCard() {
-  const [errors, setErrors] = useState({});
+  const { isFormValid, errors, handleInputValidity } = useFormValidation();
   const { handleAddPlaceSubmit } = useContext(CurrentUserContext);
   const cardName = useRef();
   const cardLink = useRef();
@@ -14,14 +15,6 @@ export default function NewCard() {
       name: cardName.current.value,
       link: cardLink.current.value,
     });
-  };
-
-  const handleInputValidity = (e) => {
-    const { name, validity, validationMessage } = e.target;
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: validity.valid ? "" : validationMessage,
-    }));
   };
 
   return (
@@ -65,7 +58,11 @@ export default function NewCard() {
         </span>
       </label>
 
-      <button className="button popup__button" type="submit">
+      <button
+        className="button popup__button"
+        type="submit"
+        disabled={!isFormValid}
+      >
         Salvar
       </button>
     </form>

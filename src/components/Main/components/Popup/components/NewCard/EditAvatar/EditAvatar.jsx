@@ -1,7 +1,9 @@
 import { useContext, useRef } from "react";
+import useFormValidation from "../../../../../../../hooks/useFormValidation";
 import CurrentUserContext from "../../../../../../../contexts/CurrentUserContext";
 
 export default function EditAvatar() {
+  const { isFormValid, errors, handleInputValidity } = useFormValidation();
   const { handleUpdateAvatar } = useContext(CurrentUserContext);
   const inputRef = useRef();
 
@@ -21,9 +23,16 @@ export default function EditAvatar() {
         required
         type="url"
         ref={inputRef}
+        onChange={handleInputValidity}
       />
-      <span className="popup__error" id="avatar-link-input-error"></span>
-      <button className="button popup__button" type="submit">
+      <span className="popup__error" id="avatar-link-input-error">
+        {errors["avatar"]}
+      </span>
+      <button
+        className="button popup__button"
+        type="submit"
+        disabled={!isFormValid}
+      >
         Salvar
       </button>
     </form>
