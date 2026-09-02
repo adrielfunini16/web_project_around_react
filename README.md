@@ -1,16 +1,101 @@
-# React + Vite
+# Around the U.S. — React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Around the U.S. is an interactive and responsive web application built with React as part of the TripleTen Full-Stack Web Development Bootcamp.
 
-Currently, two official plugins are available:
+The project is a React-based evolution of the original JavaScript version of Around the U.S., redesigned using reusable components, React Hooks, Context, state management, and REST API integration.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Users can manage a personal profile and interact with a dynamic collection of location cards, with application data synchronized with an external API.
 
-## React Compiler
+## Live Demo
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+🔗 **GitHub Pages:** Coming soon
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- View a responsive gallery of location cards
+- Add new cards
+- Delete cards
+- Like and unlike cards
+- Open card images in a dedicated popup
+- Edit user profile information
+- Update the user avatar
+- Load user and card data from a REST API
+- Persist changes through API requests
+- Synchronize API responses with React state
+
+## Technologies
+
+- React
+- JavaScript (ES6+)
+- JSX
+- HTML5
+- CSS3
+- Vite
+- REST API
+- Git
+- GitHub
+
+## React & Frontend Concepts
+
+- Functional Components
+- Props
+- State Management
+- React Hooks
+  - `useState`
+  - `useEffect`
+  - `useContext`
+- React Context
+- Controlled Forms
+- Component Composition
+- Conditional Rendering
+- Event Handling
+- Asynchronous JavaScript
+- API Integration
+- Responsive Design
+- BEM Methodology
+- Reusable Component Architecture
+
+## Technical Highlights
+
+### Component-Based Architecture
+
+The interface is divided into reusable React components, keeping responsibilities separated and making the application easier to maintain and extend.
+
+### State Management
+
+React state is used to manage cards, user information, popup visibility, and form interactions. State updates are synchronized with responses received from the API.
+
+### React Context
+
+User data is shared between components through React Context, reducing unnecessary prop passing and providing centralized access to the current user.
+
+### REST API Integration
+
+The application communicates with an external REST API to retrieve and persist data.
+
+API operations include:
+
+- Retrieving user information and cards
+- Updating profile information
+- Updating the user avatar
+- Creating new cards
+- Deleting cards
+- Adding and removing likes
+
+Asynchronous requests are handled using JavaScript Promises and the Fetch API.
+
+## Project Structure
+
+The project follows a modular structure that separates components, contexts, utilities, styles, and application logic.
+
+```text
+src/
+├── components/
+├── contexts/
+├── hooks/
+├── utils/
+├── blocks/
+├── images/
+├── vendor/
+├── index.css
+└── main.jsx
