@@ -8,7 +8,7 @@ Users can manage a personal profile and interact with a dynamic collection of lo
 
 ## Live Demo
 
-🔗 **GitHub Pages:** Coming soon
+🔗 **GitHub Pages:** [View Live Project](https://adrielfunini16.github.io/web_project_around_react/)
 
 ## Features
 
@@ -99,3 +99,4 @@ src/
 ├── vendor/
 ├── index.css
 └── main.jsx
+```
